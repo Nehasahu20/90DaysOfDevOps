@@ -1,5 +1,3 @@
-# linux-troubleshooting-runbook.md
-
 # Linux Troubleshooting Runbook
 
 ## Target Service / Process
