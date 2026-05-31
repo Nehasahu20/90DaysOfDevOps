@@ -451,21 +451,6 @@ Important Ports:
   6379  → Redis    (cache)
   27017 → MongoDB  (NoSQL)
 
---------------------------------------------------------------------------------
 
-## OVERALL SUMMARY
-
-  Day 04 → See what is running on Linux
-  Day 05 → Troubleshoot like a DevOps engineer
-  Day 06 → Read and write files
-  Day 07 → Know where everything lives in Linux
-  Day 08 → Deploy a web server on cloud
-  Day 09 → Manage users and teams
-  Day 10 → Control who can read/write/run files
-  Day 11 → Control who owns files
-  Day 12 → Revision of all above
-  Day 13 → Manage disk storage flexibly
-  Day 14 → Check and troubleshoot network
-  Day 15 → Understand DNS, IPs, ports deeply
 
 ================================================================================
