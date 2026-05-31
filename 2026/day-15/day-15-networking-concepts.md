@@ -1,9 +1,13 @@
 ## DAY 15 — DNS, IP, Subnets & Ports
 
 ### What it is:
+
+
 Deep dive into networking building blocks.
 
 ### DNS:
+
+
 ```bash
 dig google.com              # full DNS lookup
 dig google.com +short       # just the IP
@@ -180,12 +184,15 @@ ss -tulpn | grep 3306       # MySQL running?
 ## DAY 04 — Processes & Services
 
 What is a Process?
+
 Every command you run on Linux becomes a process. Even your terminal is a process.
 
   You type: ls -l
+  
   Linux creates a process → runs it → shows output → process dies
 
 What is a Service?
+
 A service is a process that runs in the background all the time (like SSH, Nginx, MySQL).
 
   ps aux               # see ALL running processes
@@ -201,6 +208,7 @@ A service is a process that runs in the background all the time (like SSH, Nginx
 ## DAY 05 — Troubleshooting Drill
 
 What is a Runbook?
+
 A runbook is a checklist you follow when something breaks in production.
 Like a doctor checklist — check this, then this, then this.
 
@@ -263,6 +271,7 @@ Rule: When you see an error, always check /var/log first!
 ## DAY 08 — Cloud Server + Nginx
 
 What is Nginx?
+
 Nginx is a web server. It listens on port 80/443 and serves web pages to browsers.
 
   Browser → port 80 → Nginx → shows webpage
