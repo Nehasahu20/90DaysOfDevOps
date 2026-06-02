@@ -1,375 +1,423 @@
-============================================================
-  DAY 17 - LOOPS, ARGUMENTS AND ERROR HANDLING
-============================================================
+# Complete DevOps Study Notes
 
 
-------------------------------------------------------------
-TASK 1: FOR LOOP
-------------------------------------------------------------
+## Day 17 — Loops, Arguments and Error Handling
 
-WHAT IS FOR LOOP?
-  A for loop repeats commands for every item in a list
-  Real life example: For every student in class, print their name
+---
 
-SYNTAX:
-  for VARIABLE in item1 item2 item3
-  do
-    echo $VARIABLE
-  done
+### Task 1: For Loop
 
-SCRIPT: for_loop.sh
-  #!/bin/bash
-  for FRUIT in Apple Mango Banana Orange Grapes
-  do
-    echo "Fruit: $FRUIT"
-  done
+**What is For Loop?**
+- Repeats commands for every item in a list
 
-OUTPUT:
-  Fruit: Apple
-  Fruit: Mango
-  Fruit: Banana
-  Fruit: Orange
-  Fruit: Grapes
+**Syntax:**
 
-SCRIPT: count.sh (numbers 1 to 10)
-  #!/bin/bash
-  for NUM in $(seq 1 10)
-  do
-    echo "Number: $NUM"
-  done
+```bash
+for VARIABLE in item1 item2 item3
+do
+  echo $VARIABLE
+done
+```
 
-  seq 1 10  --> generates numbers from 1 to 10 automatically
+**Script: for_loop.sh**
 
-OUTPUT:
-  Number: 1
-  Number: 2
-  ... up to ...
-  Number: 10
+```bash
+#!/bin/bash
+for FRUIT in Apple Mango Banana Orange Grapes
+do
+  echo "Fruit: $FRUIT"
+done
+```
 
+**Output:**
 
-------------------------------------------------------------
-TASK 2: WHILE LOOP
-------------------------------------------------------------
+```
+Fruit: Apple
+Fruit: Mango
+Fruit: Banana
+Fruit: Orange
+Fruit: Grapes
+```
 
-WHAT IS WHILE LOOP?
-  Repeats commands as long as a condition is TRUE
-  When condition becomes false, loop stops
-  Real life: While there is food on plate, keep eating
+**Script: count.sh (numbers 1 to 10)**
 
-SYNTAX:
-  while [ condition ]
-  do
-    commands
-  done
+```bash
+#!/bin/bash
+for NUM in $(seq 1 10)
+do
+  echo "Number: $NUM"
+done
+# seq 1 10 generates numbers from 1 to 10 automatically
+```
 
-SCRIPT: countdown.sh
-  #!/bin/bash
-  read -p "Enter a number to countdown: " NUM
-  while [ $NUM -ge 0 ]
-  do
-    echo "Countdown: $NUM"
-    NUM=$((NUM - 1))
-  done
-  echo "Done!"
+**Output:**
 
-  $((NUM - 1))  --> arithmetic calculation in bash
-  -ge           --> greater than or equal to
+```
+Number: 1
+Number: 2
+...
+Number: 10
+```
 
-OUTPUT (input 5):
-  Countdown: 5
-  Countdown: 4
-  Countdown: 3
-  Countdown: 2
-  Countdown: 1
-  Countdown: 0
-  Done!
+---
 
+### Task 2: While Loop
 
-------------------------------------------------------------
-TASK 3: COMMAND LINE ARGUMENTS
-------------------------------------------------------------
+**What is While Loop?**
+- Repeats commands as long as condition is TRUE
 
-WHAT ARE ARGUMENTS?
-  Values you pass to a script when running it
-  Example: ./greet.sh Neha DevOps
-  Here Neha is argument 1 and DevOps is argument 2
+**Syntax:**
 
-SPECIAL VARIABLES:
-  $0   --> script name itself (./greet.sh)
-  $1   --> first argument (Neha)
-  $2   --> second argument (DevOps)
-  $#   --> total count of arguments (2)
-  $@   --> all arguments together (Neha DevOps)
+```bash
+while [ condition ]
+do
+  commands
+done
+```
 
-SCRIPT: greet_arg.sh
-  #!/bin/bash
-  if [ -z "$1" ]; then
-    echo "Usage: ./greet_arg.sh <name>"
-    exit 1
-  fi
-  echo "Hello, $1!"
+**Script: countdown.sh**
 
-  -z  --> checks if variable is empty or missing
+```bash
+#!/bin/bash
+read -p "Enter a number to countdown: " NUM
+while [ $NUM -ge 0 ]
+do
+  echo "Countdown: $NUM"
+  NUM=$((NUM - 1))
+done
+echo "Done!"
+# $((NUM - 1)) → arithmetic in bash
+# -ge          → greater than or equal to
+```
 
-OUTPUT:
-  ./greet_arg.sh Neha    --> Hello, Neha!
-  ./greet_arg.sh         --> Usage: ./greet_arg.sh <name>
+**Output (input 5):**
 
-SCRIPT: args_demo.sh
-  #!/bin/bash
-  echo "Script Name     : $0"
-  echo "Total Arguments : $#"
-  echo "All Arguments   : $@"
+```
+Countdown: 5
+Countdown: 4
+Countdown: 3
+Countdown: 2
+Countdown: 1
+Countdown: 0
+Done!
+```
 
-  Run: ./args_demo.sh DevOps Linux AWS Docker
+---
 
-OUTPUT:
-  Script Name     : ./args_demo.sh
-  Total Arguments : 4
-  All Arguments   : DevOps Linux AWS Docker
+### Task 3: Command Line Arguments
 
+**What are Arguments?**
+- Values you pass to a script when running it
+- Example: `./greet.sh Neha DevOps`
 
-------------------------------------------------------------
-TASK 4: INSTALL PACKAGES VIA SCRIPT
-------------------------------------------------------------
+**Special Variables:**
 
-WHAT IS THIS?
-  Use a for loop to automatically check and install packages
-  Very useful in DevOps for server setup automation
+| Variable | Meaning |
+|----------|---------|
+| `$0` | script name itself |
+| `$1` | first argument |
+| `$2` | second argument |
+| `$#` | total count of arguments |
+| `$@` | all arguments together |
 
-SCRIPT: install_packages.sh
-  #!/bin/bash
-  if [ "$EUID" -ne 0 ]; then
-    echo "Please run as root: sudo ./install_packages.sh"
-    exit 1
-  fi
-  PACKAGES="nginx curl wget"
-  for PKG in $PACKAGES
-  do
-    if rpm -q $PKG &>/dev/null; then
-      echo "[$PKG] Already installed - Skipping"
-    else
-      echo "[$PKG] Not found - Installing..."
-      yum install -y $PKG &>/dev/null
-      echo "[$PKG] Installed Successfully"
-    fi
-  done
+**Script: greet_arg.sh**
 
-COMMANDS EXPLAINED:
-  rpm -q packagename     check if package is installed (Amazon Linux)
-  dpkg -s packagename    check if package is installed (Ubuntu)
-  yum install -y pkg     install package silently
-  &>/dev/null            hide all command output
-  $EUID                  current user ID (0 means root)
+```bash
+#!/bin/bash
+if [ -z "$1" ]; then
+  echo "Usage: ./greet_arg.sh <name>"
+  exit 1
+fi
+echo "Hello, $1!"
+# -z checks if variable is empty or missing
+```
 
-OUTPUT:
-  [nginx] Installed Successfully
-  [curl] Already installed - Skipping
-  [wget] Already installed - Skipping
+**Output:**
 
+```
+./greet_arg.sh Neha   →  Hello, Neha!
+./greet_arg.sh        →  Usage: ./greet_arg.sh <name>
+```
 
-------------------------------------------------------------
-TASK 5: ERROR HANDLING
-------------------------------------------------------------
+**Script: args_demo.sh**
 
-WHAT IS ERROR HANDLING?
-  When a command fails, instead of crashing, handle it properly
-  Show a useful message and continue or stop safely
+```bash
+#!/bin/bash
+echo "Script Name     : $0"
+echo "Total Arguments : $#"
+echo "All Arguments   : $@"
+```
 
-set -e:
-  Add this at top of script
-  If ANY command fails, script stops immediately
-  Prevents running wrong commands after a failure
+```bash
+# Run:
+./args_demo.sh DevOps Linux AWS Docker
+```
 
-OPERATORS:
-  ||  (OR)   --> Run second command only if FIRST FAILS
-  &&  (AND)  --> Run second command only if FIRST SUCCEEDS
+**Output:**
 
-EXAMPLES:
-  mkdir /tmp/test || echo "Already exists"
-  cd /tmp/test && echo "Moved successfully"
+```
+Script Name     : ./args_demo.sh
+Total Arguments : 4
+All Arguments   : DevOps Linux AWS Docker
+```
 
-SCRIPT: safe_script.sh
-  #!/bin/bash
-  set -e
-  mkdir /tmp/devops-test || echo "Directory already exists, continuing..."
-  cd /tmp/devops-test && echo "Moved into /tmp/devops-test"
-  touch devops.txt && echo "File devops.txt created"
-  echo "All steps completed successfully!"
+---
 
-OUTPUT (first run):
-  Moved into /tmp/devops-test
-  File devops.txt created
-  All steps completed successfully!
+### Task 4: Install Packages via Script
 
-OUTPUT (second run - dir already exists):
-  Directory already exists, continuing...
-  Moved into /tmp/devops-test
-  File devops.txt created
-  All steps completed successfully!
+**Script: install_packages.sh**
 
-ROOT CHECK:
-  if [ "$EUID" -ne 0 ]; then
-    echo "Run as root: sudo ./script.sh"
-    exit 1
-  fi
+```bash
+#!/bin/bash
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root: sudo ./install_packages.sh"
+  exit 1
+fi
 
-
-------------------------------------------------------------
-DAY 17 PRACTICE SCRIPT: day17_practice.sh
-------------------------------------------------------------
-
-  #!/bin/bash
-  echo "========================================"
-  echo "       Day-17 Shell Scripting Lab       "
-  echo "========================================"
-
-  # For Loop - List
-  for FRUIT in Apple Mango Banana Orange Grapes
-  do
-    echo "Fruit: $FRUIT"
-  done
-
-  # For Loop - Numbers
-  for NUM in $(seq 1 10)
-  do
-    echo "Number: $NUM"
-  done
-
-  # While Loop - Countdown
-  read -p "Enter a number to countdown: " COUNT
-  while [ $COUNT -ge 0 ]
-  do
-    echo "Countdown: $COUNT"
-    COUNT=$((COUNT - 1))
-  done
-  echo "Done!"
-
-  # Arguments
-  echo "Script Name     : $0"
-  echo "Total Arguments : $#"
-  echo "All Arguments   : $@"
-  echo "1st Argument    : $1"
-  echo "2nd Argument    : $2"
-
-  # Argument check
-  if [ -z "$1" ]; then
-    echo "No name given! Usage: ./day17_practice.sh <name> <role>"
+PACKAGES="nginx curl wget"
+for PKG in $PACKAGES
+do
+  if rpm -q $PKG &>/dev/null; then
+    echo "[$PKG] Already installed - Skipping"
   else
-    echo "Hello $1! Your role is: $2"
+    echo "[$PKG] Not found - Installing..."
+    yum install -y $PKG &>/dev/null
+    echo "[$PKG] Installed Successfully"
   fi
+done
+```
 
-  # Package check
-  for PKG in nginx curl wget git
-  do
-    if rpm -q $PKG &>/dev/null; then
-      echo "[$PKG] Already Installed"
-    else
-      echo "[$PKG] Not Installed"
-    fi
-  done
+**Commands Explained:**
 
-  # Error handling
-  mkdir /tmp/day17-test || echo "Directory already exists"
-  cd /tmp/day17-test && echo "Moved into /tmp/day17-test"
-  touch practice.txt && echo "File practice.txt created"
+| Command | Meaning |
+|---------|---------|
+| `rpm -q packagename` | check if package is installed (Amazon Linux) |
+| `dpkg -s packagename` | check if package is installed (Ubuntu) |
+| `yum install -y pkg` | install package silently |
+| `&>/dev/null` | hide all command output |
+| `$EUID` | current user ID (0 = root) |
 
-  echo "========================================"
-  echo "   Day-17 Practice Complete!            "
-  echo "========================================"
+**Output:**
+
+```
+[nginx] Installed Successfully
+[curl] Already installed - Skipping
+[wget] Already installed - Skipping
+```
+
+---
+
+### Task 5: Error Handling
+
+**What is Error Handling?**
+- When a command fails, handle it properly instead of crashing
+
+**`set -e`:**
+- Add at top of script
+- If ANY command fails, script stops immediately
+
+**Operators:**
+
+```bash
+||  (OR)   →  run second command only if FIRST FAILS
+&&  (AND)  →  run second command only if FIRST SUCCEEDS
+
+mkdir /tmp/test || echo "Already exists"
+cd /tmp/test && echo "Moved successfully"
+```
+
+**Script: safe_script.sh**
+
+```bash
+#!/bin/bash
+set -e
+mkdir /tmp/devops-test || echo "Directory already exists, continuing..."
+cd /tmp/devops-test && echo "Moved into /tmp/devops-test"
+touch devops.txt && echo "File devops.txt created"
+echo "All steps completed successfully!"
+```
+
+**Output (first run):**
+
+```
+Moved into /tmp/devops-test
+File devops.txt created
+All steps completed successfully!
+```
+
+**Output (second run):**
+
+```
+Directory already exists, continuing...
+Moved into /tmp/devops-test
+File devops.txt created
+All steps completed successfully!
+```
+
+**Root Check:**
+
+```bash
+if [ "$EUID" -ne 0 ]; then
+  echo "Run as root: sudo ./script.sh"
+  exit 1
+fi
+```
+
+---
+
+### Day 17 Practice Script: day17_practice.sh
+
+```bash
+#!/bin/bash
+echo "========================================"
+echo "       Day-17 Shell Scripting Lab       "
+echo "========================================"
+
+# For Loop - List
+for FRUIT in Apple Mango Banana Orange Grapes
+do
+  echo "Fruit: $FRUIT"
+done
+
+# For Loop - Numbers
+for NUM in $(seq 1 10)
+do
+  echo "Number: $NUM"
+done
+
+# While Loop - Countdown
+read -p "Enter a number to countdown: " COUNT
+while [ $COUNT -ge 0 ]
+do
+  echo "Countdown: $COUNT"
+  COUNT=$((COUNT - 1))
+done
+echo "Done!"
+
+# Arguments
+echo "Script Name     : $0"
+echo "Total Arguments : $#"
+echo "All Arguments   : $@"
+echo "1st Argument    : $1"
+echo "2nd Argument    : $2"
+
+# Argument check
+if [ -z "$1" ]; then
+  echo "No name given! Usage: ./day17_practice.sh <name> <role>"
+else
+  echo "Hello $1! Your role is: $2"
+fi
+
+# Package check
+for PKG in nginx curl wget git
+do
+  if rpm -q $PKG &>/dev/null; then
+    echo "[$PKG] Already Installed"
+  else
+    echo "[$PKG] Not Installed"
+  fi
+done
+
+# Error handling
+mkdir /tmp/day17-test || echo "Directory already exists"
+cd /tmp/day17-test && echo "Moved into /tmp/day17-test"
+touch practice.txt && echo "File practice.txt created"
+
+echo "========================================"
+echo "   Day-17 Practice Complete!            "
+echo "========================================"
+```
+
+---
+
+### Day 17 — Scripts Created
+
+| Script | Purpose |
+|--------|---------|
+| `for_loop.sh` | for loop with list |
+| `count.sh` | for loop with numbers |
+| `countdown.sh` | while loop countdown |
+| `greet_arg.sh` | argument check |
+| `args_demo.sh` | all argument variables |
+| `install_packages.sh` | package install with loop |
+| `safe_script.sh` | error handling |
+| `day17_practice.sh` | full practice script |
+
+### Day 17 — Key Learnings
+
+1. For loop repeats for each item in list
+2. While loop repeats while condition is true
+3. `$1` `$2` `$#` `$@` are special variables for arguments
+4. `set -e` stops script immediately on any error
+5. `||` handles failure, `&&` runs only on success
+6. Always check if script runs as root for system tasks
+
+---
+
+## Complete Cheatsheet — Day 16 & Day 17
+
+| Concept | Syntax | Meaning |
+|---------|--------|---------|
+| Shebang | `#!/bin/bash` | Use bash interpreter |
+| Variable | `NAME="value"` | Store a value |
+| Print variable | `echo "$NAME"` | Print value |
+| User input | `read -p "msg" VAR` | Take user input |
+| If condition | `if [ condition ]; then` | Make a decision |
+| End if | `fi` | Close if block |
+| For loop | `for x in list; do` | Repeat for each item |
+| Number range | `$(seq 1 10)` | Generate 1 to 10 |
+| While loop | `while [ condition ]; do` | Repeat while true |
+| End loop | `done` | Close loop |
+| Arithmetic | `$((NUM - 1))` | Math in bash |
+| Script name | `$0` | Name of script |
+| First argument | `$1` | First value passed |
+| Second argument | `$2` | Second value passed |
+| All arguments | `$@` | All values passed |
+| Argument count | `$#` | How many arguments |
+| Empty check | `[ -z "$1" ]` | Is variable empty? |
+| File exists | `[ -f "file" ]` | Does file exist? |
+| Root user check | `[ "$EUID" -ne 0 ]` | Is user root? |
+| Stop on error | `set -e` | Exit on any failure |
+| On failure | `cmd \|\| echo "failed"` | Handle failure |
+| On success | `cmd && echo "done"` | Run if success |
+| Hide output | `&>/dev/null` | Suppress all output |
+| Check pkg | `rpm -q pkgname` | Is package installed? |
+| Install pkg | `yum install -y pkg` | Install on Amazon Linux |
+| Give permission | `chmod +x script.sh` | Make script executable |
+| Run script | `./script.sh` | Execute the script |
+
+---
 
 
-------------------------------------------------------------
-DAY 17 - ALL SCRIPTS CREATED
-------------------------------------------------------------
-  for_loop.sh          --> for loop with list
-  count.sh             --> for loop with numbers
-  countdown.sh         --> while loop countdown
-  greet_arg.sh         --> argument check
-  args_demo.sh         --> all argument variables
-  install_packages.sh  --> package install with loop
-  safe_script.sh       --> error handling
-  day17_practice.sh    --> full practice script
 
-DAY 17 - KEY LEARNINGS
-  1. For loop repeats for each item in list
-  2. While loop repeats while condition is true
-  3. $1 $2 $# $@ are special variables for arguments
-  4. set -e stops script immediately on any error
-  5. || handles failure, && runs only on success
-  6. Always check if script runs as root for system tasks
+---
 
+## Linux Commands Practiced
 
-============================================================
-   COMPLETE CHEATSHEET - DAY 16 AND DAY 17
-============================================================
+```bash
+mkdir -p /path/folder           # create directory (with parents)
+ls                              # list files
+pwd                             # print current directory
+cd /path                        # change directory
+touch filename.txt              # create empty file
+cat filename.txt                # read file content
+cp file1 file2                  # copy file
+mv file1 file2                  # rename or move file
+rm -rf folder                   # delete folder and contents
+chmod 755 file                  # set file permissions
+find /path -name "*.txt"        # find files by name
+grep "word" file                # search word inside file
+hostname                        # show server name
+whoami                          # show current user
+df -h                           # disk usage
+free -m                         # memory usage
+uptime                          # how long server is running
+ps aux                          # show running processes
+tar -czf archive.tar.gz /path   # create compressed archive
+sudo yum install -y pkg         # install package
+systemctl is-active sshd        # check if service is running
+rpm -q packagename              # check if package is installed
+```
 
-CONCEPT              SYNTAX                       MEANING
--------------------------------------------------------------
-Shebang              #!/bin/bash                  Use bash interpreter
-Variable             NAME="value"                 Store a value
-Print variable       echo "$NAME"                 Print value
-User input           read -p "msg" VAR            Take user input
-If condition         if [ condition ]; then        Make a decision
-End if               fi                           Close if block
-For loop             for x in list; do            Repeat for each item
-Number range         $(seq 1 10)                  Generate 1 to 10
-While loop           while [ condition ]; do      Repeat while true
-End loop             done                         Close loop
-Arithmetic           $((NUM - 1))                 Math in bash
-Script name          $0                           Name of script
-First argument       $1                           First value passed
-Second argument      $2                           Second value passed
-All arguments        $@                           All values passed
-Argument count       $#                           How many arguments
-Empty check          [ -z "$1" ]                  Is variable empty?
-File exists check    [ -f "file" ]                Does file exist?
-Root user check      [ "$EUID" -ne 0 ]            Is user root?
-Stop on error        set -e                       Exit on any failure
-On failure           cmd || echo "failed"         Handle failure
-On success           cmd && echo "done"           Run if success
-Hide output          &>/dev/null                  Suppress all output
-Check pkg installed  rpm -q pkgname               Is package installed?
-Install package      yum install -y pkg           Install on Amazon Linux
-Give permission      chmod +x script.sh           Make script executable
-Run script           ./script.sh                  Execute the script
+---
 
-
-============================================================
-  GIT COMMANDS USED TODAY
-============================================================
-
-  git clone <url> <foldername>    clone a repository
-  Example:
-  git clone https://github.com/Nehasahu20/90DaysOfDevOps repos
-
-  cat repos/2026/day-16/README.md    read day 16 content
-  cat repos/2026/day-17/README.md    read day 17 content
-
-
-============================================================
-  LINUX COMMANDS PRACTICED TODAY
-============================================================
-
-  mkdir -p /path/folder      create directory (with parents)
-  ls                         list files
-  pwd                        print current directory
-  cd /path                   change directory
-  touch filename.txt         create empty file
-  cat filename.txt           read file content
-  cp file1 file2             copy file
-  mv file1 file2             rename or move file
-  rm -rf folder              delete folder and contents
-  chmod 755 file             set file permissions
-  find /path -name "*.txt"   find files by name
-  grep "word" file           search word inside file
-  hostname                   show server name
-  whoami                     show current user
-  df -h                      disk usage
-  free -m                    memory usage
-  uptime                     how long server is running
-  ps aux                     show running processes
-  tar -czf archive.tar.gz /path   create compressed archive
-  sudo yum install -y pkg    install package
-  systemctl is-active sshd   check if service is running
-  rpm -q packagename         check if package is installed
