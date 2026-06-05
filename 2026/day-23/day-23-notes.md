@@ -6,7 +6,7 @@
 A branch is a parallel version of your code.
 You work on features in isolation without breaking main code.
 
-### Practice Commands
+### Practice Commands  
 
 ```bash
 # List all branches
