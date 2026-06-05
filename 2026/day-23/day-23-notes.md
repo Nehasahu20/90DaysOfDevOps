@@ -2,8 +2,7 @@
 
 ## Day 23 — Git Branching & GitHub
 
-
-### Practice Commands
+Practice Commands
 
 ```bash
 # List all branches
