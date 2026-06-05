@@ -60,7 +60,7 @@ git merge upstream/main
 
 ### Clone vs Fork
 | | Clone | Fork |
-|--|---|---|
+|---|---|---|
 | What | Local copy | GitHub copy |
 | When | Use code | Contribute |
 
