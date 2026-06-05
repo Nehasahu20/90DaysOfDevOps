@@ -2,11 +2,8 @@
 
 ## Day 23 — Git Branching & GitHub
 
-### What is a Branch?
-A branch is a parallel version of your code.
-You work on features in isolation without breaking main code.
+### 
 
-### Practice Commands  
 
 ```bash
 # List all branches
