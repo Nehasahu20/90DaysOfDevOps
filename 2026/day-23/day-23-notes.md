@@ -4,7 +4,7 @@
 
 ### 
 
-
+# PRATICE COMMAND
 ```bash
 # List all branches
 git branch
