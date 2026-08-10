@@ -12,7 +12,7 @@ Layer 1 - Physical     → Cable, WiFi
 ```
 
 ### Key Commands:
-```bash
+```
 hostname -I                     # your IP address
 ip addr show                    # full network interface info
 
@@ -46,4 +46,3 @@ curl -I → HTTP/2 301 redirect
 5. traceroute url      → where breaking?
 ```
 
----
