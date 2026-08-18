@@ -1,47 +1,31 @@
-# Day 2  Linux Architecture Notes
+# Core components of Linux :
+- Hardware :
+The physical component where OS is installed.
+- Kernel :
+The heart of Linux. The central core that directly controls hardware, processes, memory. Interface between hardware and software. Machine understands kernel language.
+- Shell :
+Interactive way to talk to kernel using commands.
+- GUI :
+Graphical user interface for visual interaction.
+- System Libraries : 
+Collections of pre-written functions that applications use to request services from the kernel.
+- System Utilities : 
+Programs and tools (like ls, cp, grep) that perform specific tasks, managing files, users, and system operations.
 
-## Core Components of Linux
-
-### 1. Kernel
-- Core part of Linux OS
-- Manages CPU, memory, devices, and processes
-- Works as a bridge between hardware and software
-
-### 2. User Space
-- Area where user applications run
-- Examples: browser, terminal, editors
-- Cannot directly access hardware
-
-### 3. init/systemd
-- First process started during boot
-- Manages services and background processes
-- Used to start, stop, and monitor services
-
----
-
-# Process Management
-
-## What is a Process?
-- A running program is called a process
-- Every process has a unique PID (Process ID)
-
-## Process States
-- Running → currently executing
-- Sleeping → waiting for input/resource
-- Stopped → paused process
-- Zombie → completed but still listed
-
-## Useful Commands
-- ps → show running processes
-- top → real-time process monitoring
-- kill → stop a process
-- systemctl status nginx → check service status
-- journalctl -u nginx → view service logs
-
----
-
-# Why systemd Matters
-- Starts services automatically during boot
-- Restarts failed services
-- Helps manage logs and system services
-- Important for troubleshooting in DevOps
+# Processes in Linux
+Processes are instances of running programs. For ex. if you do pin ww.google.com then ping process is created.
+You can list processes using ps(ps ax, ps ef) or top commands. 
+## Process states
+- running : Active process.
+- sleeping : Idle process.
+- Stopped : Process suspended by signal SIGSTOP (Ctrl+Z, Ctrl+C). It can be resumed by a SIGCONT signal.
+- Zombie : The process has terminated, but its entry in the process table still exists because its parent process has not 
+           yet read its exit status.
+           
+# 5 Commands used daily 
+- ps or top : Provides process ID, memory usage, CPU time and command name which is crucial for monitoring system performance
+              and troubleshooting.
+- chmod : Changing permission of files.
+- ssh : Provides secure shell connecting to remote server.
+- systemctl : Managing system services (starting, stopping).
+- df /du : df is used to monitor disk space usage and du is used to estimate size of a specific directory.
